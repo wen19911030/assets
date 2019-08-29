@@ -1,0 +1,33 @@
+[class*="v-hairline"] {
+  position: relative;
+}
+[class*="v-hairline"]::after {
+  position: absolute;
+  box-sizing: border-box;
+  content: " ";
+  pointer-events: none;
+  top: -50%;
+  right: -50%;
+  bottom: -50%;
+  left: -50%;
+  border: 0 solid #ebedf0;
+  transform: scale(0.5);
+}
+.v-hairline--top::after {
+  border-top-width: 1px;
+}
+.v-hairline--left::after {
+  border-left-width: 1px;
+}
+.v-hairline--right::after {
+  border-right-width: 1px;
+}
+.v-hairline--bottom::after {
+  border-bottom-width: 1px;
+}
+.v-hairline--top-bottom::after {
+  border-width: 1px 0;
+}
+.v-hairline--surround::after {
+  border-width: 1px;
+}

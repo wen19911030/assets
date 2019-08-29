@@ -1,0 +1,151 @@
+@charset "utf-8";
+
+// 容器保持固定宽高比
+// <div class="aspectratio">
+//   <div class="aspectratio-content"></div>
+// </div>
+@mixin aspectratio($width, $percentage) {
+  position: relative;
+  height: 0;
+  width: $width;
+  padding-bottom: $percentage;
+  .aspectratio-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* 水平居中 */
+@mixin horizontal-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 一行文本居中，多行文本靠左对齐 */
+@mixin mult-line-left {
+  text-align: center;
+  .text {
+    display: inline-block;
+    text-align: left;
+  }
+}
+
+/* 多行文本垂直居中 */
+@mixin mult-line-middle($lineHeight: 120px) {
+  line-height: $lineHeight; // 外围容器的高度
+  .text {
+    display: inline-block;
+    line-height: 1.5;
+    vertical-align: middle;
+  }
+}
+
+/* 多行文本溢出 */
+@mixin mult-line-ellipsis($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+
+// 多行文本溢出兼容PC
+@mixin mult-line-ellipsis-pc($height, $lineHeight, $bgColor) {
+  height: $height;
+  line-height: $lineHeight;
+  text-align: justify;
+  overflow: hidden;
+  background: $bgColor;
+  .text {
+    float: right;
+    margin-left: -1em;
+    width: 100%;
+  }
+  &::before {
+    float: left;
+    width: 1em;
+    height: 100%;
+    content: "";
+  }
+  &::after {
+    float: right;
+    width: 2.5em;
+    height: $lineHeight;
+    margin-left: -2.5em;
+    padding-right: 1em;
+    content: "...";
+    text-align: right;
+    position: relative;
+    top: -$lineHeight;
+    left: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      $bgColor 50%,
+      $bgColor
+    );
+  }
+}
+
+// 根据兄弟元素数量来设置样式
+@mixin n-items($n) {
+  &:first-child:nth-last-child(#{$n}),
+  &:first-child:nth-last-child(#{$n}) ~ & {
+    @content;
+  }
+}
+
+/* disable禁用样式 */
+@mixin disabled($bgColor: #e6e6e6, $textColor: #ababab) {
+  background-color: $bgColor !important;
+  color: $textColor !important;
+  cursor: not-allowed !important;
+}
+
+/* 显示切角效果 */
+@mixin beveled-corners($bg, $tl: 0, $tr: $tl, $br: $tl, $bl: $tr) {
+  background: $bg;
+  background: linear-gradient(135deg, transparent $tl, $bg 0) top left,
+    linear-gradient(225deg, transparent $tr, $bg 0) top right,
+    linear-gradient(-45deg, transparent $br, $bg 0) bottom right,
+    linear-gradient(45deg, transparent $bl, $bg 0) bottom left;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+/* 元素折角效果 */
+@mixin folded-corner($background, $size, $angle: 30deg) {
+  position: relative;
+  background: $background; /* 回退样式 */
+  background: linear-gradient(
+    $angle - 180deg,
+    transparent $size,
+    $background 0
+  );
+  border-radius: 0.5em;
+  $x: $size / sin($angle);
+  $y: $size / cos($angle);
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(
+        to left bottom,
+        transparent 50%,
+        rgba(0, 0, 0, 0.2) 0,
+        rgba(0, 0, 0, 0.4)
+      )
+      100% 0 no-repeat;
+    width: $y;
+    height: $x;
+    transform: translateY($y - $x) rotate(2 * $angle - 90deg);
+    transform-origin: bottom right;
+    border-bottom-left-radius: inherit;
+    box-shadow: -0.2em 0.2em 0.3em -0.1em rgba(0, 0, 0, 0.2);
+  }
+}
