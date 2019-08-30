@@ -1,0 +1,17 @@
+#当Runner通过轮询检测到gitlab上有任务时，就会执行这个文件
+
+stages:
+  - build
+
+#打包
+build:
+  stage: build
+  script:
+    - echo "building Now..."
+    - cd D:\frontend\assets
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - git pull
+  only:
+    - master
+  tags:
+    - TEST_CI
