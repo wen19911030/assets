@@ -10,7 +10,6 @@ build:
     - chcp 65001
     - echo "building Now..."
     - cd D:\frontend\assets
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - git pull
   only:
     - master
