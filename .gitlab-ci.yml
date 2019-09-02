@@ -8,7 +8,7 @@ build:
   stage: build
   script:
     - echo "building Now..."
-    - cd /Users/wen/Document/Github/assets
+    - cd /Users/wen/Document/GitHub/assets
     - git remote -v
     - git pull origin master
   only:
