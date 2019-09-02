@@ -10,6 +10,7 @@ build:
     - chcp 65001
     - echo "building Now..."
     - cd D:\frontend\assets
+    - git remote -v
     - git pull origin master
   only:
     - master
