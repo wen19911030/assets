@@ -9,11 +9,10 @@ build:
   script:
     - chcp 65001
     - echo "building Now..."
-    - cd D:\frontend\assets
+    - cd /Users/wen/Document/Github/assets
     - git remote -v
-    - $env:UserName
     - git pull origin master
   only:
     - master
   tags:
-    - master
+    - mac-test-ci
