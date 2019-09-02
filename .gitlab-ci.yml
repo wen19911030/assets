@@ -10,7 +10,7 @@ build:
     - chcp 65001
     - echo "building Now..."
     - cd D:\frontend\assets
-    - git pull
+    - git pull origin master
   only:
     - master
   tags:
