@@ -11,6 +11,8 @@ build:
     - cd /Users/wen/Documents/GitHub/assets
     - git remote -v
     - git pull origin master
+    - npm install
+    - npm run build
   only:
     - master
   tags:
