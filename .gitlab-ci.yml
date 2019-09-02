@@ -7,7 +7,6 @@ stages:
 build:
   stage: build
   script:
-    - chcp 65001
     - echo "building Now..."
     - cd /Users/wen/Document/Github/assets
     - git remote -v
