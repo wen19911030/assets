@@ -14,4 +14,4 @@ build:
   only:
     - master
   tags:
-    - TEST_CI2
+    - master
