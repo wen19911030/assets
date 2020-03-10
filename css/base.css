@@ -13,21 +13,61 @@ body {
   scroll-behavior: smooth;
 }
 
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.inline {
+  display: inline;
+}
 .flex {
   display: flex;
 }
-.col-flex {
+.vertical-center {
   display: flex;
-  flex-direction: column;
-}
-.mid-flex {
-  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
 }
-.ver-mid-flex {
+.vertical {
   display: flex;
   align-items: center;
+}
+
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+
+.show {
+  display: block !important;
+}
+.hide {
+  display: none !important;
+}
+.invisible {
+  visibility: hidden;
+}
+
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
 }
 
 /* 单行文本溢出 */

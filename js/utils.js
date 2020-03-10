@@ -40,21 +40,22 @@ export function dateFormat(date) {
   }
 }
 
-export function dateFormater(formater, t){
-    let date = t ? new Date(t) : new Date(),
-        Y = date.getFullYear() + '',
-        M = date.getMonth() + 1,
-        D = date.getDate(),
-        H = date.getHours(),
-        m = date.getMinutes(),
-        s = date.getSeconds();
-    return formater.replace(/YYYY|yyyy/g,Y)
-        .replace(/YY|yy/g,Y.substr(2,2))
-        .replace(/MM/g,(M<10?'0':'') + M)
-        .replace(/DD/g,(D<10?'0':'') + D)
-        .replace(/HH|hh/g,(H<10?'0':'') + H)
-        .replace(/mm/g,(m<10?'0':'') + m)
-        .replace(/ss/g,(s<10?'0':'') + s)
+export function dateFormater(formater, t) {
+  let date = t ? new Date(t) : new Date(),
+    Y = date.getFullYear() + "",
+    M = date.getMonth() + 1,
+    D = date.getDate(),
+    H = date.getHours(),
+    m = date.getMinutes(),
+    s = date.getSeconds();
+  return formater
+    .replace(/YYYY|yyyy/g, Y)
+    .replace(/YY|yy/g, Y.substr(2, 2))
+    .replace(/MM/g, (M < 10 ? "0" : "") + M)
+    .replace(/DD/g, (D < 10 ? "0" : "") + D)
+    .replace(/HH|hh/g, (H < 10 ? "0" : "") + H)
+    .replace(/mm/g, (m < 10 ? "0" : "") + m)
+    .replace(/ss/g, (s < 10 ? "0" : "") + s);
 }
 
 /**
@@ -67,28 +68,28 @@ export function dateFormater(formater, t){
  * @returns
  */
 export function easeout(start, end = 0, rate = 2, callback) {
-  if (start == end || typeof start != "number") {
+  if (start === end || typeof start !== "number") {
     return;
   }
-  requestAnimFrame = (function() {
+  const requestAnimationFrame = (function() {
     return (
       window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||
-      function(callback) {
-        window.setTimeout(callback, 1000 / 60);
+      function(cb) {
+        window.setTimeout(cb, 1000 / 60);
       }
     );
   })();
 
   const step = function() {
-    start = start + (end - start) / rate;
-    if (start < 1) {
+    start += (end - start) / rate;
+    if (Math.abs(end - start) < 1) {
       callback(end, true);
       return;
     }
     callback(start, false);
-    requeststartnimationFrame(step);
+    requestAnimationFrame(step);
   };
   step();
 }
@@ -155,6 +156,55 @@ export function frequency(arr = []) {
   return filterArr;
 }
 
+/**
+ * 将列表转为树结构
+ *
+ * @export
+ * @param {*} list [{ id: "1", parentId: "0", name: "浙江省" }, { id: "1-1", parentId: "1", name: "杭州市" }]
+ * @param {string} [parentId="0"] 父节点
+ * @param {number} [level=1] 等级
+ * @returns [{ id: "1", parentId: "0", name: "浙江省", level: 1, children: [{ id: "1-1", parentId: "1", name: "杭州市", level: 2}] }]
+ */
+export function convertToTree(list, parentId = "0", level = 1) {
+  const out = [];
+  for (let i = 0; i < list.length; i++) {
+    count++;
+    let node = list[i];
+    if (node.parentId === parentId) {
+      node.level = Number(level);
+      const children = convertToTree(list, node.id, node.level + 1);
+      if (Array.isArray(children.length) && children.length.length > 0) {
+        node.children = children;
+      }
+      out.push(node);
+      list.splice(i, 1);
+      i--;
+    }
+  }
+  return out;
+}
+
+/**
+ * 树结构拍平
+ *
+ * @export
+ * @param {*} tree [{ id: "1", parentId: "0", name: "浙江省", level: 1, children: [{ id: "1-1", parentId: "1", name: "杭州市", level: 2}] }]
+ * @returns [{ id: "1", parentId: "0", name: "浙江省", level: 1 }, { id: "1-1", parentId: "1", name: "杭州市", level: 2 }]
+ */
+export function doFlattenTree(tree) {
+  const out = [];
+  tree.forEach(node => {
+    const { children, ...rest } = node;
+    if (Array.isArray(children)) {
+      out.push({ ...rest });
+      out.push(...doFlattenTree(children));
+    } else {
+      out.push({ ...rest });
+    }
+  });
+  return out;
+}
+
 // 获取数据类型
 export function getRawType(target) {
   let type = Object.prototype.toString.call(target);
@@ -188,34 +238,29 @@ export function isObj(x) {
   return x !== null && (type === "object" || type === "function");
 }
 
-// 深拷贝对象
-export function deepAssign(to, from) {
-  Object.keys(from).forEach(key => {
-    const val = from[key];
-    if (getRawType(val) === "object" || Array.isArray(val)) {
-      if (getRawType(val) === "object" && getRawType(to[key]) !== "object") {
-        to[key] = {};
-      }
-      if (Array.isArray(val) && !Array.isArray(to[key])) {
-        to[key] = [];
-      }
-      deepAssign(to[key], val);
-    } else if (val !== undefined) {
-      to[key] = val;
+/**
+ * 深拷贝
+ *
+ * @export
+ * @param {*} target 拷贝对象
+ * @param {*} [map=new WeakMap()] WeakMap 对象是一组键/值对的集合，其中的键是弱引用的。其键必须是对象，而值可以是任意的
+ * @returns
+ */
+export function deepClone(target, map = new WeakMap()) {
+  if (getRawType(target) === "object" || Array.isArray(target)) {
+    let to = Array.isArray(target) ? [] : {};
+    // 防止循环引用
+    if (map.get(target)) {
+      return map.get(target);
     }
-  });
-  return to;
-}
-
-// 深拷贝
-export function deepClone(obj) {
-  if (Array.isArray(obj)) {
-    return obj.map(item => deepClone(item));
+    map.set(target, to);
+    Object.keys(target).forEach(key => {
+      to[key] = deepClone(target[key], map);
+    });
+    return to;
+  } else {
+    return target;
   }
-  if (getRawType(obj) === "object") {
-    return deepAssign({}, obj);
-  }
-  return obj;
 }
 
 // 记忆函数：缓存函数的运算结果
@@ -228,22 +273,31 @@ export function cached(fn) {
 }
 
 // 横线转驼峰命名
-const camelizeRE = /-(w)/g;
 export function camelize(str) {
+  const camelizeRE = /-(w)/g;
   return str.replace(camelizeRE, function(_, c) {
     return c ? c.toUpperCase() : "";
   });
 }
 
+// 类数组转数组
+export function toArray(list, start = 0) {
+  let ret = Array.from(list);
+  return ret.slice(start);
+}
+
 // 运行环境是浏览器
-export const inBrowser = typeof window !== 'undefined';
+export const inBrowser = typeof window !== "undefined";
 // 运行环境是微信
-export const inWeex = typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform;
+export const inWeex =
+  typeof WXEnvironment !== "undefined" && !!WXEnvironment.platform;
 export const weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
 // 浏览器 UA 判断
 export const UA = inBrowser && window.navigator.userAgent.toLowerCase();
 export const isIE = UA && /msie|trident/.test(UA);
-export const isIE9 = UA && UA.indexOf('msie 9.0') > 0;
-export const isEdge = UA && UA.indexOf('edge/') > 0;
-export const isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android');
-export const isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
+export const isIE9 = UA && UA.indexOf("msie 9.0") > 0;
+export const isEdge = UA && UA.indexOf("edge/") > 0;
+export const isAndroid =
+  (UA && UA.indexOf("android") > 0) || weexPlatform === "android";
+export const isIOS =
+  (UA && /iphone|ipad|ipod|ios/.test(UA)) || weexPlatform === "ios";
