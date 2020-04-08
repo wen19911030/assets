@@ -8,10 +8,10 @@
 export function queryString(name) {
   const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
   let str =
-    window.location.href.indexOf("#") < window.location.href.indexOf("?")
+    window.location.href.indexOf('#') < window.location.href.indexOf('?')
       ? window.location.href
       : window.location.search;
-  const searchStr = str.split("?")[1];
+  const searchStr = str.split('?')[1];
   if (searchStr) {
     const r = searchStr.match(reg);
     if (r != null) return decodeURIComponent(r[2]);
@@ -30,10 +30,10 @@ export function queryString(name) {
 export function dateFormat(date) {
   try {
     const d = date ? new Date(date) : new Date();
-    let str = d.toLocaleString("zh-CN", {
-      hour12: false
+    let str = d.toLocaleString('zh-CN', {
+      hour12: false,
     });
-    str = str.replace(/\//g, "-").replace(/\d+/g, a => a.padStart(2, "0"));
+    str = str.replace(/\//g, '-').replace(/\d+/g, (a) => a.padStart(2, '0'));
     return str;
   } catch (e) {
     return e.message;
@@ -42,7 +42,7 @@ export function dateFormat(date) {
 
 export function dateFormater(formater, t) {
   let date = t ? new Date(t) : new Date(),
-    Y = date.getFullYear() + "",
+    Y = date.getFullYear() + '',
     M = date.getMonth() + 1,
     D = date.getDate(),
     H = date.getHours(),
@@ -51,11 +51,11 @@ export function dateFormater(formater, t) {
   return formater
     .replace(/YYYY|yyyy/g, Y)
     .replace(/YY|yy/g, Y.substr(2, 2))
-    .replace(/MM/g, (M < 10 ? "0" : "") + M)
-    .replace(/DD/g, (D < 10 ? "0" : "") + D)
-    .replace(/HH|hh/g, (H < 10 ? "0" : "") + H)
-    .replace(/mm/g, (m < 10 ? "0" : "") + m)
-    .replace(/ss/g, (s < 10 ? "0" : "") + s);
+    .replace(/MM/g, (M < 10 ? '0' : '') + M)
+    .replace(/DD/g, (D < 10 ? '0' : '') + D)
+    .replace(/HH|hh/g, (H < 10 ? '0' : '') + H)
+    .replace(/mm/g, (m < 10 ? '0' : '') + m)
+    .replace(/ss/g, (s < 10 ? '0' : '') + s);
 }
 
 /**
@@ -68,21 +68,21 @@ export function dateFormater(formater, t) {
  * @returns
  */
 export function easeout(start, end = 0, rate = 2, callback) {
-  if (start === end || typeof start !== "number") {
+  if (start === end || typeof start !== 'number') {
     return;
   }
-  const requestAnimationFrame = (function() {
+  const requestAnimationFrame = (function () {
     return (
       window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||
-      function(cb) {
+      function (cb) {
         window.setTimeout(cb, 1000 / 60);
       }
     );
   })();
 
-  const step = function() {
+  const step = function () {
     start += (end - start) / rate;
     if (Math.abs(end - start) < 1) {
       callback(end, true);
@@ -138,7 +138,7 @@ export function throttle(func, delay = 60) {
  * @returns 返回一个二元数组，按出现次数从高到低排列 如：[['a', 10], ['b', 5]];
  */
 export function frequency(arr = []) {
-  const tuples = arr.map(item => [item, 1]);
+  const tuples = arr.map((item) => [item, 1]);
   for (let i = 0; i < tuples.length; i++) {
     for (let j = i + 1; j < tuples.length; j++) {
       if (tuples[i][0] === tuples[j][0]) {
@@ -165,7 +165,7 @@ export function frequency(arr = []) {
  * @param {number} [level=1] 等级
  * @returns [{ id: "1", parentId: "0", name: "浙江省", level: 1, children: [{ id: "1-1", parentId: "1", name: "杭州市", level: 2}] }]
  */
-export function convertToTree(list, parentId = "0", level = 1) {
+export function convertToTree(list, parentId = '0', level = 1) {
   const out = [];
   for (let i = 0; i < list.length; i++) {
     count++;
@@ -193,7 +193,7 @@ export function convertToTree(list, parentId = "0", level = 1) {
  */
 export function doFlattenTree(tree) {
   const out = [];
-  tree.forEach(node => {
+  tree.forEach((node) => {
     const { children, ...rest } = node;
     if (Array.isArray(children)) {
       out.push({ ...rest });
@@ -214,17 +214,17 @@ export function getRawType(target) {
 // 检测数据是不是除了symbol外的原始数据
 export function isStatic(value) {
   return (
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "boolean" ||
-    typeof value === "undefined" ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    typeof value === 'undefined' ||
     value === null
   );
 }
 
 // 检测数据是不是原始数据
 export function isPrimitive(value) {
-  return isStatic(value) || typeof value === "symbol";
+  return isStatic(value) || typeof value === 'symbol';
 }
 
 // 判断给定变量是否定义
@@ -235,7 +235,7 @@ export function isDef(value) {
 // 判断给定变量是否对象
 export function isObj(x) {
   const type = typeof x;
-  return x !== null && (type === "object" || type === "function");
+  return x !== null && (type === 'object' || type === 'function');
 }
 
 /**
@@ -247,14 +247,14 @@ export function isObj(x) {
  * @returns
  */
 export function deepClone(target, map = new WeakMap()) {
-  if (getRawType(target) === "object" || Array.isArray(target)) {
+  if (getRawType(target) === 'object' || Array.isArray(target)) {
     let to = Array.isArray(target) ? [] : {};
     // 防止循环引用
     if (map.get(target)) {
       return map.get(target);
     }
     map.set(target, to);
-    Object.keys(target).forEach(key => {
+    Object.keys(target).forEach((key) => {
       to[key] = deepClone(target[key], map);
     });
     return to;
@@ -275,8 +275,8 @@ export function cached(fn) {
 // 横线转驼峰命名
 export function camelize(str) {
   const camelizeRE = /-(w)/g;
-  return str.replace(camelizeRE, function(_, c) {
-    return c ? c.toUpperCase() : "";
+  return str.replace(camelizeRE, function (_, c) {
+    return c ? c.toUpperCase() : '';
   });
 }
 
@@ -286,18 +286,55 @@ export function toArray(list, start = 0) {
   return ret.slice(start);
 }
 
+/**
+ * 北京时间当前几点
+ */
+export function getBeiJingHours() {
+  const timezone = 8; // 目标时区时间，东八区
+  const utcHour = new Date().getUTCHours();
+  return utcHour + timezone >= 24
+    ? utcHour + timezone - 24
+    : utcHour + timezone;
+}
+
+/**
+ * 判断是否存在该日期
+ * @param {string} dateStr 日期
+ * @param {string} sign 年月日分隔符
+ * @returns {boolean}
+ */
+export function isExistDate(dateStr, sign) {
+  const dateObj = dateStr.split(sign); // yyyy/mm/dd yyyy-mm-dd
+
+  // 列出12個月，每月最大日期限制
+  const limitInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  const theYear = parseInt(dateObj[0], 10);
+  const theMonth = parseInt(dateObj[1], 10);
+  const theDay = parseInt(dateObj[2], 10);
+  const isLeap = new Date(theYear, 1, 29).getDate() === 29; // 是否為閏年?
+
+  if (isLeap) {
+    // 若為閏年，最大日期限制改為 29
+    limitInMonth[1] = 29;
+  }
+
+  // 比對該日是否超過每個月份最大日期限制
+  return theDay <= limitInMonth[theMonth - 1];
+}
+
 // 运行环境是浏览器
-export const inBrowser = typeof window !== "undefined";
+export const inBrowser = typeof window !== 'undefined';
 // 运行环境是微信
 export const inWeex =
-  typeof WXEnvironment !== "undefined" && !!WXEnvironment.platform;
+  typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform;
 export const weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
 // 浏览器 UA 判断
 export const UA = inBrowser && window.navigator.userAgent.toLowerCase();
 export const isIE = UA && /msie|trident/.test(UA);
-export const isIE9 = UA && UA.indexOf("msie 9.0") > 0;
-export const isEdge = UA && UA.indexOf("edge/") > 0;
+export const isIE9 = UA && UA.indexOf('msie 9.0') > 0;
+export const isEdge = UA && UA.indexOf('edge/') > 0;
 export const isAndroid =
-  (UA && UA.indexOf("android") > 0) || weexPlatform === "android";
+  (UA && UA.indexOf('android') > 0) || weexPlatform === 'android';
 export const isIOS =
-  (UA && /iphone|ipad|ipod|ios/.test(UA)) || weexPlatform === "ios";
+  (UA && /iphone|ipad|ipod|ios/.test(UA)) || weexPlatform === 'ios';

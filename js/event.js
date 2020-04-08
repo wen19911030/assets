@@ -48,6 +48,11 @@ export default class Event {
     }
     return this;
   }
+  /** 
+   * 执行一次
+   * @param {string} event 事件名称
+   * @param {function} fn 
+   */
   $once(event, fn = noop) {
     function on() {
       this.$off(event, on);

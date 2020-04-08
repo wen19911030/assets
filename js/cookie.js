@@ -2,7 +2,6 @@
 export default {
   /**
    * 设置cookie
-   *
    * @param {*} name [required] cookie名称
    * @param {*} value [required] cookie值
    * @param {*} expires 用于指定cookie何时应被删除的时间戳，默认情况下，会话结束浏览器会删除所有cookie
@@ -12,35 +11,34 @@ export default {
    * @memberof Cookies
    */
   set(name, value, expires, path, domain, secure) {
-    var cookieText = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    var cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
     if (expires instanceof Date) {
-      cookieText += "; expires=" + expires.toGMTString();
+      cookieText += '; expires=' + expires.toGMTString();
     }
     if (path) {
-      cookieText += "; path=" + path;
+      cookieText += '; path=' + path;
     }
     if (domain) {
-      cookieText += "; domain=" + domain;
+      cookieText += '; domain=' + domain;
     }
     if (secure) {
-      cookieText += "; secure";
+      cookieText += '; secure';
     }
     document.cookie = cookieText;
   },
 
   /**
    * 获取cookie
-   *
    * @param {*} name cookie名称
    * @returns
    * @memberof Cookies
    */
   get(name) {
-    var cookieName = encodeURIComponent(name) + "=",
+    var cookieName = encodeURIComponent(name) + '=',
       cookieStart = document.cookie.indexOf(cookieName),
       cookieValue = null;
     if (cookieStart > -1) {
-      var cookieEnd = document.cookie.indexOf(";", cookieStart);
+      var cookieEnd = document.cookie.indexOf(';', cookieStart);
       if (cookieEnd == -1) {
         cookieEnd = document.cookie.length;
       }
@@ -53,7 +51,6 @@ export default {
 
   /**
    * 删除cookie
-   *
    * @param {*} name cookie名称
    * @param {*} path url路径
    * @param {*} domain 域
@@ -61,6 +58,6 @@ export default {
    * @memberof Cookies
    */
   remove(name, path, domain, secure) {
-    this.setCookie(name, "", new Date(0), path, domain, secure);
-  }
+    this.setCookie(name, '', new Date(0), path, domain, secure);
+  },
 };
