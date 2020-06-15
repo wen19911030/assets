@@ -20,7 +20,7 @@ module.exports = {
     self: true,
   },
   // 启用的规则及其各自的错误级别
-  // 每个规则对应的0，1，2分别表示off, warning, error三个错误级别
+  // 每个规则对应的0，1，2分别表示off, warn, error三个错误级别
   rules: {
     'accessor-pairs': 'error', // 设置了 setter ，必须相应设置 getter ，反之不必须
     'array-bracket-newline': ['off', 'consistent'], // 在数组开括号后和闭括号前使用一致，前括号换行则闭括号也换行

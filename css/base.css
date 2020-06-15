@@ -1,23 +1,7 @@
-img {
-  display: inline-block;
-  border-style: none;
-}
-
-html {
-  font-family: "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont,
-    Helvetica Neue, Helvetica, sans-serif;
-}
-
-html,
-body {
-  scroll-behavior: smooth;
-}
-
 .responsive-image {
   max-width: 100%;
   height: auto;
 }
-
 .block {
   display: block;
 }
@@ -52,7 +36,6 @@ body {
 .text-justify {
   text-align: justify;
 }
-
 .show {
   display: block !important;
 }
@@ -62,34 +45,29 @@ body {
 .invisible {
   visibility: hidden;
 }
-
 .float-left {
   float: left;
 }
 .float-right {
   float: right;
 }
-
 /* 单行文本溢出 */
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 /* 可访问性隐藏 */
 .clip {
   position: absolute;
   clip: rect(0 0 0 0);
 }
-
 /* 清除浮动 */
 .clearfix::after {
   content: "";
   display: table;
   clear: both;
 }
-
 [class*="v-hairline"] {
   position: relative;
 }

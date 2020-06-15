@@ -40,6 +40,11 @@ export function dateFormat(date) {
   }
 }
 
+/**
+ * 时间格式化
+ * @param {*} formater 格式化字符串
+ * @param {*} t 可识别的时间格式
+ */
 export function dateFormater(formater, t) {
   let date = t ? new Date(t) : new Date(),
     Y = date.getFullYear() + '',
@@ -154,6 +159,21 @@ export function frequency(arr = []) {
       return cur[1] - pre[1];
     });
   return filterArr;
+}
+
+/**
+ * 获取给定字符串中出现次数最多的字符及出现次数
+ * @param {*} str
+ */
+export function getMaxNumberOfChar(str) {
+  return (str + '').split('').reduce(
+    function (pre, cur, index, arr) {
+      cur in pre ? pre[cur]++ : (pre[cur] = 1);
+      pre[cur] > pre.value && ((pre.char = cur), (pre.value = pre[cur]));
+      return pre;
+    },
+    { value: 0 }
+  );
 }
 
 /**
@@ -282,12 +302,17 @@ export function camelize(str) {
 
 // 类数组转数组
 export function toArray(list, start = 0) {
-  let ret = Array.from(list);
+  const ret = Array.from(list);
   return ret.slice(start);
 }
 
+// 数组去重
+export function uniqArray(list) {
+  return Array.from(new Set(list));
+}
+
 /**
- * 北京时间当前几点
+ * 获取北京时间当前时钟
  */
 export function getBeiJingHours() {
   const timezone = 8; // 目标时区时间，东八区
